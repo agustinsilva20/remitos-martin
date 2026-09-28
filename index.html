@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1f2937">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Remitos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="login" class="login">
+    <form id="form-login" class="login-card">
+      <h1 id="login-marca">Remitos</h1>
+      <label>Contraseña
+        <input type="password" id="login-pass" autocomplete="current-password" autofocus>
+      </label>
+      <p id="login-error" class="login-error oculto">Contraseña incorrecta.</p>
+      <button type="submit" class="btn primario">Ingresar</button>
+    </form>
+  </div>
+
+  <header class="topbar">
+    <h1 id="marca">Remitos</h1>
+    <span id="proximo-badge" class="badge">N° —</span>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="nuevo">Nuevo</button>
+    <button class="tab" data-view="historial">Historial</button>
+    <button class="tab" data-view="ajustes">Ajustes</button>
+  </nav>
+
+  <main>
+    <div id="aviso" class="aviso oculto"></div>
+
+    <!-- NUEVO REMITO -->
+    <section id="view-nuevo" class="view">
+      <form id="form-remito" autocomplete="off">
+        <h2>Remito</h2>
+        <label>Número de remito
+          <div class="numero-remito">
+            <span id="numero-prefijo" class="prefijo">00001-</span>
+            <input type="number" name="numero" min="1" inputmode="numeric" required>
+          </div>
+        </label>
+        <p class="nota">Se completa solo con el próximo número. Podés cambiarlo si hace falta.</p>
+
+        <h2>Cliente</h2>
+        <label>Cliente *
+          <input type="text" name="cliente" required>
+        </label>
+        <label>CUIT *
+          <input type="text" name="cuit" required inputmode="numeric">
+        </label>
+        <label>Domicilio
+          <input type="text" name="domicilio">
+        </label>
+
+        <h2>Productos / Servicios</h2>
+        <div id="items"></div>
+        <button type="button" id="btn-agregar" class="btn secundario">+ Agregar ítem</button>
+
+        <h2>Observaciones</h2>
+        <label>
+          <textarea name="observaciones" rows="3"></textarea>
+        </label>
+
+        <button type="submit" class="btn primario grande">Generar PDF</button>
+      </form>
+    </section>
+
+    <!-- HISTORIAL -->
+    <section id="view-historial" class="view oculto">
+      <h2>Remitos emitidos</h2>
+      <div id="lista-historial"></div>
+    </section>
+
+    <!-- AJUSTES -->
+    <section id="view-ajustes" class="view oculto">
+      <h2>Numeración</h2>
+      <label>Punto de venta
+          <input type="text" id="ajuste-pv" disabled>
+      </label>
+      <label>Próximo número
+        <input type="number" id="ajuste-proximo" min="1" inputmode="numeric">
+      </label>
+      <button type="button" id="btn-guardar-numero" class="btn primario">Guardar número</button>
+      <p class="nota">El punto de venta se toma de <code>fields.json</code>. El contador se guarda en este dispositivo.</p>
+
+      <h2>Respaldo</h2>
+      <p class="nota">Los remitos y el contador viven en este navegador. Exportá un respaldo antes de cambiar de teléfono o borrar datos.</p>
+      <button type="button" id="btn-exportar" class="btn secundario">Exportar respaldo</button>
+      <label class="btn secundario archivo">Importar respaldo
+        <input type="file" id="input-importar" accept="application/json" hidden>
+      </label>
+
+      <h2>Cabecera</h2>
+      <pre id="config-preview" class="config"></pre>
+    </section>
+  </main>
+
+  <template id="tpl-item">
+    <div class="item">
+      <div class="fila">
+        <label class="c-codigo">Código
+          <input type="text" name="codigo">
+        </label>
+        <label class="c-cantidad">Cantidad
+          <input type="number" name="cantidad" inputmode="decimal" step="any" min="0">
+        </label>
+        <label class="c-um">UM
+          <input type="text" name="um" list="lista-um">
+        </label>
+      </div>
+      <label>Descripción *
+        <input type="text" name="descripcion">
+      </label>
+      <button type="button" class="btn-quitar" aria-label="Quitar ítem">✕</button>
+    </div>
+  </template>
+
+  <datalist id="lista-um">
+    <option value="UN"><option value="KG"><option value="M"><option value="M2">
+    <option value="LT"><option value="HS"><option value="CAJA"><option value="PAR">
+  </datalist>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
